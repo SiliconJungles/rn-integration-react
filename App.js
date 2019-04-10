@@ -9,6 +9,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import {NativeModules} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -19,10 +21,19 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
-	_onPressButton() {
-		NativeModules.MyToastModule.show('MyToast from react-native', NativeModules.MyToastModule.SHORT)
+	_onToast() {
+		NativeModules.MyToastModule.show("Toast from react-native", NativeModules.MyToastModule.SHORT)
   }
-
+	_onCamera() {
+		ImagePicker.openCamera({
+			width: 300,
+			height: 400,
+			cropping: true,
+		}).then(image => {
+			console.log(image);
+		});
+	}
+	
   render() {
     return (
       <View style={styles.container}>
@@ -30,8 +41,12 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
 				<Button
-            onPress={this._onPressButton}
+            onPress={this._onToast}
             title="Test Toast"
+          />
+					<Button
+            onPress={this._onCamera}
+            title="Test Camera"
           />
       </View>
     );
